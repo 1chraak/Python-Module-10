@@ -1,6 +1,3 @@
-
-"""Higher-order = functions taking/returning other functions"""
-
 from collections.abc import Callable
 from typing import Tuple, List
 

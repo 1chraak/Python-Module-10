@@ -1,6 +1,3 @@
-
-"""Decorator = wrapper that adds behavior (@functools.wraps is mandatory)"""
-
 import time
 import functools
 from collections.abc import Callable
@@ -26,11 +23,10 @@ def power_validator(min_power: int) -> Callable:
     def decorator(func: Callable) -> Callable:
         @functools.wraps(func)
         def wrapper(*args, **kwargs) -> Any:
-            # check if called from the class method or not
             power = None
-            if len(args) > 0 and isinstance(args[0], int):
-                power = args[0]
-            elif len(args) > 1 and isinstance(args[1], int):
+            if len(args) >= 3 and isinstance(args[2], int):
+                power = args[2]
+            elif len(args) >= 2 and isinstance(args[1], int):
                 power = args[1]
 
             if power is not None and power >= min_power:
@@ -45,12 +41,10 @@ def retry_spell(max_attempts: int) -> Callable:
     def decorator(func: Callable) -> Callable:
         @functools.wraps(func)
         def wrapper(*args, **kwargs) -> Any:
-            last_exc: Exception | None = None
             for attempt in range(1, max_attempts + 1):
                 try:
                     return func(*args, **kwargs)
-                except Exception as exc:
-                    last_exc = exc
+                except Exception:
                     if attempt < max_attempts:
                         msg = (
                             f"Spell failed, retrying... "
@@ -63,10 +57,7 @@ def retry_spell(max_attempts: int) -> Callable:
                             f"{max_attempts} attempts"
                         )
                         print(msg)
-            # Re-raise the last exception after attempts
-            if last_exc is not None:
-                return f"Spell casting failed after {max_attempts} attempts"
-
+                        return "Waaaaaaaght spelled!"
         return wrapper
 
     return decorator
@@ -100,8 +91,10 @@ def main():
     @retry_spell(max_attempts=3)
     def waaaaaaagh_spell():
         raise Exception("Waaaaaaagh spelled !")
-
-    print(waaaaaaagh_spell())
+    try:
+        print(waaaaaaagh_spell())
+    except Exception as e:
+        print(e)
 
     print("\nTesting MageGuild...")
     guild = MageGuild()

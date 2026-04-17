@@ -1,5 +1,3 @@
-"""Lambda = short anonymous function (map, filter, sorted)"""
-
 from typing import List, Dict, Union
 
 
@@ -26,7 +24,6 @@ def power_filter(
     if not mages:
         raise ValueError("Mages list must not be empty!")
 
-    # Fix: Added an 'isinstance' check to satisfy mypy's type safety
     filtered_by_power: List[Dict[str, Union[str, int]]] = list(filter(
         lambda mage: isinstance
         (mage['power'], int) and mage['power'] >= min_power,
@@ -59,7 +56,6 @@ def mage_stats(
     max_val = max(mages, key=lambda m: m['power'])['power']
     min_val = min(mages, key=lambda m: m['power'])['power']
 
-    # Cast the sum/len to float for the average to satisfy Union[int, float]
     total_power = sum(map(lambda m: int(m['power']), mages))
     avg_power = round(total_power / len(mages), 2)
 
@@ -102,7 +98,6 @@ def main():
 
     print("\nTesting spell transformer...")
     transformed = spell_transformer(spells)
-    # Using join with a space to match expected output example
     print(" ".join(transformed))
 
     print("\nTesting mage stats...")

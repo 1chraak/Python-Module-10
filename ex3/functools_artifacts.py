@@ -1,10 +1,7 @@
-
-"""Functools = reduce, partial, lru_cache, singledispatch"""
-
 import functools
 from functools import partial, lru_cache, singledispatch
 from collections.abc import Callable
-from typing import Any, Tuple
+from typing import Any
 import operator
 
 
@@ -40,6 +37,7 @@ def partial_enchanter(base_enchantment: Callable) -> dict[str, Callable]:
         "lightning": lightning_enchanter
     }
 
+
 @lru_cache(maxsize=None)
 def memoized_fibonacci(n: int) -> int:
     if n < 2:
@@ -50,7 +48,6 @@ def memoized_fibonacci(n: int) -> int:
 
 def spell_dispatcher() -> Callable[[Any], str]:
 
-    # default impementation
     @singledispatch
     def cast(spell_input: Any) -> str:
         return f"Unknown spell type: {type(spell_input).__name__}"
@@ -65,7 +62,10 @@ def spell_dispatcher() -> Callable[[Any], str]:
 
     @cast.register(list)
     def _(spells: list) -> str:
-        return f"Multi-casting ({len(spells)} spells): {', '.join(map(str, spells))}"
+        return (
+                f"Multi-casting ({len(spells)} spells): "
+                f"{', '.join(map(str, spells))}"
+                )
 
     return cast
 

@@ -1,7 +1,3 @@
-
-"""Closure = inner function remembers outer variable (nonlocal)"""
-
-
 from collections.abc import Callable
 from typing import Any
 
